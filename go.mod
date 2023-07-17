@@ -2,7 +2,7 @@ module github.com/tkcrm/micro-example
 
 go 1.20
 
-require github.com/tkcrm/micro v0.0.2
+require github.com/tkcrm/micro v0.0.3
 
 require (
 	go.uber.org/atomic v1.11.0 // indirect

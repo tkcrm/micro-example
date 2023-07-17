@@ -24,11 +24,11 @@ func main() {
 		launcher.WithLogger(logger),
 		launcher.WithVersion(version),
 		launcher.WithContext(context.Background()),
-		launcher.AfterStart(func() error {
+		launcher.WithAfterStart(func() error {
 			logger.Infoln("app", appName, "was started")
 			return nil
 		}),
-		launcher.AfterStop(func() error {
+		launcher.WithAfterStop(func() error {
 			logger.Infoln("app", appName, "was stopped")
 			return nil
 		}),
@@ -40,16 +40,12 @@ func main() {
 			return nil
 		}),
 		service.WithStop(func(_ context.Context) error {
-			time.Sleep(time.Second * 3)
-			return nil
-		}),
-		service.AfterStartFinished(func() error {
-			logger.Infoln("service test-service was finished")
+			time.Sleep(time.Second * 1)
 			return nil
 		}),
 	)
 
-	svc2 := service.New(
+	disabledService := service.New(
 		service.WithName("disabled-service"),
 		service.WithStart(func(_ context.Context) error {
 			return nil
@@ -60,11 +56,19 @@ func main() {
 		service.WithEnabled(false),
 	)
 
+	// without stop func
+	invalidService := service.New(
+		service.WithName("invalid-service"),
+		service.WithStart(func(_ context.Context) error {
+			return nil
+		}),
+	)
+
 	pingPongSvc := service.New(
 		service.WithService(pingpong.New(logger, time.Millisecond*200)),
 	)
 
-	ln.ServicesRunner().Register(svc, svc2, pingPongSvc)
+	ln.ServicesRunner().Register(pingPongSvc, svc, disabledService, invalidService)
 
 	// shutdown after 1 seconds
 	go func() {
