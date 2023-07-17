@@ -65,7 +65,10 @@ func main() {
 	)
 
 	pingPongSvc := service.New(
-		service.WithService(pingpong.New(logger, time.Millisecond*200)),
+		service.WithService(pingpong.New(
+			logger,
+			pingpong.WithTimeout(time.Millisecond*200),
+		)),
 	)
 
 	ln.ServicesRunner().Register(pingPongSvc, svc, disabledService, invalidService)
