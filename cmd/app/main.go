@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/tkcrm/micro/launcher"
@@ -26,11 +25,11 @@ func main() {
 		launcher.WithVersion(version),
 		launcher.WithContext(context.Background()),
 		launcher.AfterStart(func() error {
-			logger.Infoln("service", appName, "started")
+			logger.Infoln("app", appName, "was started")
 			return nil
 		}),
 		launcher.AfterStop(func() error {
-			logger.Infoln("service", appName, "stopped")
+			logger.Infoln("app", appName, "was stopped")
 			return nil
 		}),
 	)
@@ -41,20 +40,35 @@ func main() {
 			return nil
 		}),
 		service.WithStop(func(_ context.Context) error {
-			return errors.New("test")
+			time.Sleep(time.Second * 3)
+			return nil
+		}),
+		service.AfterStartFinished(func() error {
+			logger.Infoln("service test-service was finished")
+			return nil
 		}),
 	)
 
-	pingPongSvc := service.New(
-		service.WithService(pingpong.New(logger, time.Second*5)),
+	svc2 := service.New(
+		service.WithName("disabled-service"),
+		service.WithStart(func(_ context.Context) error {
+			return nil
+		}),
+		service.WithStop(func(_ context.Context) error {
+			return nil
+		}),
+		service.WithEnabled(false),
 	)
 
-	ln.ServicesRunner().Register(svc)
-	ln.ServicesRunner().Register(pingPongSvc)
+	pingPongSvc := service.New(
+		service.WithService(pingpong.New(logger, time.Millisecond*200)),
+	)
 
-	// shutdown after 16 seconds
+	ln.ServicesRunner().Register(svc, svc2, pingPongSvc)
+
+	// shutdown after 1 seconds
 	go func() {
-		<-time.After(time.Second * 16)
+		<-time.After(time.Second * 1)
 		logger.Info("Shutdown example: shutting down service")
 		ln.Stop()
 	}()
