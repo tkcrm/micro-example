@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/tkcrm/micro/launcher"
-	"github.com/tkcrm/micro/logger"
-	"github.com/tkcrm/micro/service"
-	"github.com/tkcrm/micro/service/pingpong"
+	"github.com/tkcrm/mx/launcher"
+	"github.com/tkcrm/mx/logger"
+	"github.com/tkcrm/mx/service"
+	"github.com/tkcrm/mx/service/pingpong"
 )
 
 var version = "local"

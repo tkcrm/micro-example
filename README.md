@@ -1,4 +1,4 @@
-# GO micro example
+# GO mx example
 
 ```bash
 # start service

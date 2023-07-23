@@ -1,8 +1,8 @@
-module github.com/tkcrm/micro-example
+module github.com/tkcrm/mx-example
 
 go 1.20
 
-require github.com/tkcrm/micro v0.0.4
+require github.com/tkcrm/mx v0.0.6
 
 require (
 	go.uber.org/atomic v1.11.0 // indirect
