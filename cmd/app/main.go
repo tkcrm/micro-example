@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/tkcrm/mx-example/internal/config"
+	"github.com/tkcrm/mx/cfg"
 	"github.com/tkcrm/mx/launcher"
 	"github.com/tkcrm/mx/logger"
 	"github.com/tkcrm/mx/service"
@@ -18,6 +20,11 @@ func main() {
 		logger.WithAppVersion(version),
 		logger.WithAppName(appName),
 	)
+
+	conf := new(config.Config)
+	if err := cfg.Load(conf, cfg.WithVersion(version)); err != nil {
+		logger.Fatalf("could not load configuration: %s", err)
+	}
 
 	ln := launcher.New(
 		launcher.WithName(appName),
