@@ -1,4 +1,4 @@
-# Enviroments
+# Environments
 
 | Name                  | Required | Secret | Default value | Usage | Example |
 | --------------------- | -------- | ------ | ------------- | ----- | ------- |
