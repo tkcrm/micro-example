@@ -1,3 +1,4 @@
 #!/bin/sh
 
+echo "Generating markdown with envs..."
 exec go run cmd/app/main.go --markdown --file ENVS.md
