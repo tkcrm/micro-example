@@ -4,19 +4,22 @@ import (
 	"context"
 	"time"
 
+	"github.com/tkcrm/mx-example/internal/api"
 	"github.com/tkcrm/mx-example/internal/config"
+	"github.com/tkcrm/mx-example/internal/services/books"
 	"github.com/tkcrm/mx/cfg"
 	"github.com/tkcrm/mx/launcher"
 	"github.com/tkcrm/mx/logger"
 	"github.com/tkcrm/mx/service"
 	"github.com/tkcrm/mx/service/pingpong"
+	"github.com/tkcrm/mx/transport/grpc_transport"
 )
 
 var version = "local"
 var appName = "micro-example"
 
 func main() {
-	logger := logger.New(
+	logger := logger.NewExtended(
 		logger.WithAppVersion(version),
 		logger.WithAppName(appName),
 	)
@@ -30,7 +33,8 @@ func main() {
 		launcher.WithName(appName),
 		launcher.WithLogger(logger),
 		launcher.WithVersion(version),
-		launcher.WithContext(context.Background()),
+		launcher.WithRunnerServicesSequence(launcher.RunnerServicesSequenceFifo),
+		launcher.WithOpsConfig(conf.Ops),
 		launcher.WithAfterStart(func() error {
 			logger.Infoln("app", appName, "was started")
 			return nil
@@ -41,48 +45,43 @@ func main() {
 		}),
 	)
 
-	svc := service.New(
-		service.WithName("test-service"),
-		service.WithStart(func(_ context.Context) error {
-			return nil
-		}),
-		service.WithStop(func(_ context.Context) error {
-			time.Sleep(time.Second * 1)
-			return nil
-		}),
-	)
-
-	disabledService := service.New(
-		service.WithName("disabled-service"),
-		service.WithStart(func(_ context.Context) error {
+	// custom service
+	customSvc := service.New(
+		service.WithName("custom-service"),
+		service.WithStart(func(ctx context.Context) error {
+			logger.Info("hello")
+			<-ctx.Done()
+			logger.Info("goodbye")
 			return nil
 		}),
 		service.WithStop(func(_ context.Context) error {
 			return nil
 		}),
-		service.WithEnabled(false),
 	)
 
-	// without stop func
-	invalidService := service.New(
-		service.WithName("invalid-service"),
-		service.WithStart(func(_ context.Context) error {
-			return nil
-		}),
+	// servicse
+	booksService := books.New()
+
+	// grpc servers
+	authorServer := api.NewAuthorServer()
+
+	// grpc instance
+	grpcServer := grpc_transport.NewServer(
+		grpc_transport.WithLogger(logger),
+		grpc_transport.WithConfig(conf.Grpc),
+		grpc_transport.WithServices(authorServer),
 	)
 
-	pingPongSvc := service.New(
-		service.WithService(pingpong.New(
-			logger,
-			pingpong.WithTimeout(time.Millisecond*200),
-		)),
+	ln.ServicesRunner().Register(
+		customSvc,
+		service.New(service.WithService(grpcServer)),
+		service.New(service.WithService(booksService)),
+		service.New(service.WithService(pingpong.New(logger))),
 	)
 
-	ln.ServicesRunner().Register(pingPongSvc, svc, disabledService, invalidService)
-
-	// shutdown after 1 seconds
+	// shutdown after 1 minute
 	go func() {
-		<-time.After(time.Second * 1)
+		<-time.After(time.Minute)
 		logger.Info("Shutdown example: shutting down service")
 		ln.Stop()
 	}()
