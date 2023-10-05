@@ -76,8 +76,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-github.com/tkcrm/mx v0.2.0 h1:WjxBAvWB5ixsFwyP3dqp89UxBF9RA8DbJ8YRjBIzizs=
-github.com/tkcrm/mx v0.2.0/go.mod h1:x8g2e+ekb9Ia4VevCGKhTRohlBh1tWqyj0eGa/VM4q0=
+github.com/tkcrm/mx v0.2.1 h1:kArfw6BD63s0RnjCcv6nwIsPXEtMbpursGOrRKFY2SQ=
+github.com/tkcrm/mx v0.2.1/go.mod h1:x8g2e+ekb9Ia4VevCGKhTRohlBh1tWqyj0eGa/VM4q0=
 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.45.0 h1:RsQi0qJ2imFfCvZabqzM9cNXBG8k6gXMv1A0cXRmH6A=
 go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.45.0/go.mod h1:vsh3ySueQCiKPxFLvjWC4Z135gIa34TQ/NSqkDTZYUM=
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.45.0 h1:x8Z78aZx8cOF0+Kkazoc7lwUNMGy0LrzEMxTm4BbTxg=

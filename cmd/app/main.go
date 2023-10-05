@@ -35,14 +35,7 @@ func main() {
 		launcher.WithVersion(version),
 		launcher.WithRunnerServicesSequence(launcher.RunnerServicesSequenceFifo),
 		launcher.WithOpsConfig(conf.Ops),
-		launcher.WithAfterStart(func() error {
-			logger.Infoln("app", appName, "was started")
-			return nil
-		}),
-		launcher.WithAfterStop(func() error {
-			logger.Infoln("app", appName, "was stopped")
-			return nil
-		}),
+		launcher.WithAppStartStopLoggin(true),
 	)
 
 	// custom service
