@@ -15,8 +15,10 @@ import (
 	"github.com/tkcrm/mx/transport/grpc_transport"
 )
 
-var version = "local"
-var appName = "micro-example"
+var (
+	appName = "micro-example"
+	version = "local"
+)
 
 func main() {
 	logger := logger.NewExtended(
@@ -35,7 +37,7 @@ func main() {
 		launcher.WithVersion(version),
 		launcher.WithRunnerServicesSequence(launcher.RunnerServicesSequenceFifo),
 		launcher.WithOpsConfig(conf.Ops),
-		launcher.WithAppStartStopLoggin(true),
+		launcher.WithAppStartStopLog(true),
 	)
 
 	// custom service
