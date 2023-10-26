@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/google/uuid v1.3.1
 	github.com/tkcrm/mx v0.2.2
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf v1.31.0
 )
 
