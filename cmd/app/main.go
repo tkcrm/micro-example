@@ -6,6 +6,7 @@ import (
 
 	"github.com/tkcrm/mx-example/internal/api"
 	"github.com/tkcrm/mx-example/internal/config"
+	"github.com/tkcrm/mx-example/internal/services/authors"
 	"github.com/tkcrm/mx-example/internal/services/books"
 	"github.com/tkcrm/mx/cfg"
 	"github.com/tkcrm/mx/launcher"
@@ -54,23 +55,25 @@ func main() {
 		}),
 	)
 
-	// servicse
-	booksService := books.New()
+	// services
+	booksService := books.New(logger)
+	authorsService := authors.New()
 
 	// grpc servers
-	authorServer := api.NewAuthorServer()
+	authorGrpcServer := api.NewAuthorServer()
 
 	// grpc instance
 	grpcServer := grpc_transport.NewServer(
 		grpc_transport.WithLogger(logger),
 		grpc_transport.WithConfig(conf.Grpc),
-		grpc_transport.WithServices(authorServer),
+		grpc_transport.WithServices(authorGrpcServer),
 	)
 
 	ln.ServicesRunner().Register(
 		customSvc,
 		service.New(service.WithService(grpcServer)),
 		service.New(service.WithService(booksService)),
+		service.New(service.WithService(authorsService)),
 		service.New(service.WithService(pingpong.New(logger))),
 	)
 
