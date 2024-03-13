@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.4.0
 	github.com/tkcrm/mx v0.2.10
 	google.golang.org/grpc v1.59.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
